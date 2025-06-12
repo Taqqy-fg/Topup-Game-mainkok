@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Menunggu Pembayaran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#FFE277] min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-lg mx-auto bg-white rounded-3xl p-8 text-center shadow-lg">
+            <!-- Payment Icon -->
+            <div class="mb-6">
+                <img src="https://cdn-icons-png.flaticon.com/512/2645/2645233.png" 
+                     class="w-20 h-20 mx-auto" alt="Payment">
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-2xl font-bold mb-3">Menunggu Pembayaran</h1>
+            
+            <!-- Transaction Details -->
+            <div class="bg-gray-50 rounded-xl p-4 my-6 text-left">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-gray-600">Total Pembayaran:</span>
+                    <span class="font-bold text-lg" th:text="'Rp ' + ${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT')}"></span>
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-gray-600">Metode:</span>
+                    <span class="font-medium" th:text="${paymentMethod}"></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600">ID Transaksi:</span>
+                    <span class="font-medium" th:text="${'TRX-' + transactionId}"></span>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex gap-4">
+                <a href="/" class="flex-1 py-3 px-4 bg-gray-100 text-gray-800 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+                    Batalkan
+                </a>
+                <a href="/user/transaction/history" class="flex-1 py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    Cek Riwayat
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

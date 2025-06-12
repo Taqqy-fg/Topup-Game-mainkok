@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products - Top Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        golden: '#ffd700',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-900 min-h-screen p-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold text-golden mb-8" th:text="${game + ' Top Up'}">Game Top Up</h1>
+
+        <!-- Products Grid -->
+        <div th:unless="${#lists.isEmpty(products)}" 
+             class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+            <div th:each="product : ${products}" 
+                 th:data-id="${product.id}"
+                 th:data-name="${product.name}"
+                 th:data-price="${product.price}"
+                 onclick="showPaymentModal(this)"
+                 class="bg-gray-800 rounded-lg overflow-hidden shadow-xl hover:scale-105 transition-transform duration-200 cursor-pointer">
+                <!-- Tambahkan radio untuk seleksi -->
+                <input type="radio" 
+                       name="selectedProduct" 
+                       th:value="${product.id}"
+                       th:checked="${product.selected}"
+                       class="absolute top-4 right-4 w-5 h-5 accent-golden">
+                <!-- Image section -->
+                <div class="h-48 overflow-hidden">
+                    <img th:if="${product.category.name() == 'MLBB'}"
+                         src="https://th.bing.com/th/id/OIP.OxFqEXzBKGjcaH53A2NR-QHaEJ?pid=ImgDet&w=191&h=106&c=7"
+                         class="w-full h-full object-cover"
+                         alt="Mobile Legends">
+                    <img th:if="${product.category.name() == 'PUBG'}"
+                         src="https://www.games2egypt.com/Images/Products/27501?t=917&height=490"
+                         class="w-full h-48 object-contain"
+                         alt="PUBG Mobile">
+                </div>
+                <!-- Product details and form -->
+                <div class="p-4">
+                    <h3 class="text-golden font-bold text-xl mb-2" 
+                        th:text="${product.name}">Product Name</h3>
+                    <p class="text-white mb-4" 
+                       th:text="${product.description}">Description</p>
+                    <p class="text-golden font-bold" 
+                       th:text="${'Rp ' + #numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">
+                       Price
+                    </p>
+                    <input type="radio" name="selectedProduct" th:value="${product.id}"
+                           class="hidden peer" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div id="paymentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full">
+                <!-- Product Info -->
+                <div class="mb-6 pb-6 border-b border-gray-700">
+                    <h3 class="text-2xl font-bold text-golden mb-2" id="modalProductName">Product Name</h3>
+                    <p class="text-xl text-golden font-bold" id="modalProductPrice">Rp 0</p>
+                </div>
+
+                <!-- Input Form -->
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-300 text-sm mb-2">Game ID</label>
+                            <input type="text" id="gameId" required
+                                   class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white focus:border-golden focus:ring-1 focus:ring-golden">
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 text-sm mb-2">Server ID</label>
+                            <input type="text" id="serverId" required
+                                   class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white focus:border-golden focus:ring-1 focus:ring-golden">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-300 text-sm mb-2">Nomor Telepon</label>
+                        <input type="tel" id="phoneNumber" required
+                               class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white focus:border-golden focus:ring-1 focus:ring-golden">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm mb-2">Metode Pembayaran</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="relative">
+                                <input type="radio" name="paymentMethod" value="DANA" required class="hidden peer">
+                                <div class="border-2 border-gray-600 rounded-xl p-4 cursor-pointer
+                                            peer-checked:border-golden peer-checked:bg-gray-700">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" 
+                                         alt="DANA" class="h-8 mx-auto mb-2">
+                                    <p class="text-center text-sm text-gray-400">DANA</p>
+                                </div>
+                            </label>
+                            <label class="relative">
+                                <input type="radio" name="paymentMethod" value="GOPAY" required class="hidden peer">
+                                <div class="border-2 border-gray-600 rounded-xl p-4 cursor-pointer
+                                            peer-checked:border-golden peer-checked:bg-gray-700">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" 
+                                         alt="GOPAY" class="h-8 mx-auto mb-2">
+                                    <p class="text-center text-sm text-gray-400">GOPAY</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 mt-6">
+                    <button onclick="closePaymentModal()" 
+                            class="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">
+                        Batal
+                    </button>
+                    <button onclick="processPayment()" 
+                            class="flex-1 px-4 py-2 bg-gradient-to-r from-golden to-amber-500 text-black font-bold rounded-lg">
+                        Konfirmasi
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden Form -->
+        <form id="purchaseForm" th:action="@{/user/transaction/confirm}" method="post" class="hidden">
+            <input type="hidden" name="productId" id="formProductId">
+            <input type="hidden" name="gameId" id="formGameId">
+            <input type="hidden" name="serverId" id="formServerId">
+            <input type="hidden" name="phoneNumber" id="formPhoneNumber">
+            <input type="hidden" name="paymentMethod" id="formPaymentMethod">
+        </form>
+
+        <script>
+            let selectedProductId = null;
+
+            function closePaymentModal() {
+                document.getElementById('paymentModal').classList.add('hidden');
+                selectedProductId = null;
+            }
+
+            function processPayment() {
+                if (!selectedProductId) {
+                    alert('Silakan pilih produk terlebih dahulu');
+                    return;
+                }
+
+                const gameId = document.getElementById('gameId').value;
+                const serverId = document.getElementById('serverId').value;
+                const phoneNumber = document.getElementById('phoneNumber').value;
+                const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+
+                if (!gameId || !serverId || !phoneNumber || !paymentMethod) {
+                    alert('Mohon lengkapi semua data');
+                    return;
+                }
+
+                document.getElementById('formGameId').value = gameId;
+                document.getElementById('formServerId').value = serverId;
+                document.getElementById('formProductId').value = selectedProductId;
+                document.getElementById('formPhoneNumber').value = phoneNumber;
+                document.getElementById('formPaymentMethod').value = paymentMethod.value;
+
+                document.getElementById('purchaseForm').submit();
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function showPaymentModal(element) {
+                const productId = element.getAttribute('data-id');
+                const productName = element.getAttribute('data-name');
+                const productPrice = element.getAttribute('data-price');
+                
+                selectedProductId = productId;
+                document.getElementById('modalProductName').textContent = productName;
+                document.getElementById('modalProductPrice').textContent = 'Rp ' + Number(productPrice).toLocaleString('id-ID');
+                document.getElementById('paymentModal').classList.remove('hidden');
+            }
+        </script>
+    </div>
+</body>
+</html>

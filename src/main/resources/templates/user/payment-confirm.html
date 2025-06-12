@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Konfirmasi Pembayaran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        golden: '#ffd700',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-md">
+        <h2 class="text-golden text-3xl font-bold mb-8 text-center">Konfirmasi Pembayaran</h2>
+        
+        <div class="bg-gray-800 rounded-xl p-6 shadow-xl">
+            <!-- Order Summary -->
+            <div class="mb-6 border-b border-gray-700 pb-6">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-400">Product:</span>
+                    <span class="text-white" th:text="${product.name}"></span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-400">Game ID:</span>
+                    <span class="text-white" th:text="${gameId}"></span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-400">Server ID:</span>
+                    <span class="text-white" th:text="${serverId}"></span>
+                </div>
+                <div class="flex justify-between mt-4">
+                    <span class="text-gray-400">Total:</span>
+                    <span class="text-golden text-xl font-bold" 
+                          th:text="'Rp ' + ${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT')}"></span>
+                </div>
+            </div>
+
+            <!-- Payment Form -->
+            <form th:action="@{/user/transaction/process}" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <input type="hidden" name="gameId" th:value="${gameId}">
+                <input type="hidden" name="serverId" th:value="${serverId}">
+                <input type="hidden" name="totalPrice" th:value="${totalPrice}">
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="text-gray-400 text-sm block mb-2">Nomor Telepon</label>
+                        <input type="tel" name="phoneNumber" required
+                               placeholder="081234567890"
+                               class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-golden focus:border-golden">
+                    </div>
+                    
+                    <div>
+                        <label class="text-gray-400 text-sm block mb-2">Metode Pembayaran</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="relative">
+                                <input type="radio" name="paymentMethod" value="DANA" required class="hidden peer">
+                                <div class="border-2 border-gray-600 rounded-xl p-4 cursor-pointer transition-all duration-200
+                                           peer-checked:border-golden peer-checked:bg-gray-700">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" 
+                                         alt="DANA" class="h-8 mx-auto mb-2">
+                                    <p class="text-center text-sm text-gray-400">DANA</p>
+                                </div>
+                            </label>
+                            <label class="relative">
+                                <input type="radio" name="paymentMethod" value="GOPAY" required class="hidden peer">
+                                <div class="border-2 border-gray-600 rounded-xl p-4 cursor-pointer transition-all duration-200
+                                           peer-checked:border-golden peer-checked:bg-gray-700">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" 
+                                         alt="GOPAY" class="h-8 mx-auto mb-2">
+                                    <p class="text-center text-sm text-gray-400">GOPAY</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-golden to-amber-500 text-black font-bold py-4 px-6 rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+                        Bayar Sekarang
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

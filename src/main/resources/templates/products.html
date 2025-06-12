@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Top Up Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        golden: '#ffd700',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-900 min-h-screen py-12">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center text-golden mb-12">Choose Your Product</h1>
+        <div th:replace="fragments/products :: *"></div>
+    </div>
+</body>
+</html>

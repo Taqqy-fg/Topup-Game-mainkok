@@ -2,25 +2,59 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        golden: '#ffd700',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <h2>Register</h2>
-    <form th:action="@{/auth/register}" method="post">
-        <div>
-            <label>Username</label>
-            <input type="text" name="username" required/>
+<body class="bg-gray-900 min-h-screen flex items-center justify-center">
+    <div class="bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-md">
+        <h1 class="text-2xl text-golden font-bold mb-6 text-center">Register</h1>
+        
+        <form th:action="@{/auth/register}" method="post" class="space-y-4">
+            <div>
+                <label class="block text-gray-300 text-sm mb-2">Username</label>
+                <input type="text" name="username" required
+                       class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+            </div>
+            
+            <div>
+                <label class="block text-gray-300 text-sm mb-2">Password</label>
+                <input type="password" name="password" required
+                       class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+            </div>
+
+            <div>
+                <label class="block text-gray-300 text-sm mb-2">Email</label>
+                <input type="email" name="email" required
+                       class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+            </div>
+            
+            <button type="submit" 
+                    class="w-full bg-gradient-to-r from-golden to-amber-500 text-black font-bold py-2 px-4 rounded-lg">
+                Register
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-gray-400">Already have an account?</p>
+            <a href="/auth/login" class="text-golden hover:text-amber-400 font-medium">
+                Login here
+            </a>
+            <div class="mt-2">
+                <a href="/auth/register-admin" class="text-gray-400 hover:text-gray-300 text-sm">
+                    Register as Admin
+                </a>
+            </div>
         </div>
-        <div>
-            <label>Password</label>
-            <input type="password" name="password" required/>
-        </div>
-        <div>
-            <label>Email</label>
-            <input type="email" name="email" required/>
-        </div>
-        <button type="submit">Register</button>
-    </form>
-    <a th:href="@{/auth/login}">Login</a>
-    <a th:href="@{/auth/register-admin}">Register as Admin</a>
+    </div>
 </body>
 </html>

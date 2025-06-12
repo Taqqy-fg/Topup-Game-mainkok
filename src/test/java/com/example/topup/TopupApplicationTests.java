@@ -1,8 +1,5 @@
 package com.example.topup;
 
-import com.example.topup.repository.ProductRepository;
-import com.example.topup.service.ProductService;
-import com.example.topup.service.impl.ProductServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
